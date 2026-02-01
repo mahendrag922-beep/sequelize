@@ -1,0 +1,37 @@
+// const mysql = require("mysql2/promise");
+
+// const pool = mysql.createPool({
+//       host : process.env.DB_HOST,
+//       user: process.env.DB_USER,
+//       database:process.env.DB_NAME,
+//       password:process.env.DB_PASSWORD,
+//       connectionLimit:10,
+//       queueLimit:0,
+//       waitForConnections:true
+// });
+
+const {Sequelize} = require("sequelize");
+
+const sequelize = new Sequelize(
+   process.env.DB_NAME,
+   process.env.DB_USER,
+   process.env.DB_PASSWORD,
+{
+    host:process.env.DB_HOST,
+    dialect:process.env.DB_DIALECT,
+}
+)
+
+
+const connectDB=async()=>{
+    try{
+      await sequelize.authenticate();
+      console.log("Database connected successfully");
+    }catch(error){
+        console.error("Database fail:",error.message);
+        process.exit(1);
+    }
+};
+
+module.exports={sequelize,
+    connectDB,};
